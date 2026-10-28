@@ -1,0 +1,592 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tarik Tambang Jaringan — SMK Kelas XII</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bangers&family=Nunito:wght@600;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#1f2a33; --paper:#fffdf5;
+  --red:#e23b3b; --red-d:#b32727;
+  --blue:#2f6fe0; --blue-d:#1f4fae;
+  --green:#2f9e44; --gold:#ffd24a; --orange:#f77f00;
+  --grass:#57b04c; --grass-d:#4a9d40;
+  --charH:140px;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{min-height:100%}
+body{
+  font-family:'Nunito',sans-serif; color:var(--ink);
+  background:linear-gradient(#3f9bdc 0%, #8fd0ef 45%, #d9f0e0 100%);
+  background-attachment:fixed; overflow-x:hidden; user-select:none;
+}
+/* ===== LANGIT ===== */
+.sky{position:fixed;inset:0;z-index:-1;overflow:hidden}
+.sun{position:absolute;top:60px;right:7vw;width:92px;height:92px;border-radius:50%;
+  background:radial-gradient(circle at 35% 35%, #ffe98a, #ffcf3f 70%);
+  box-shadow:0 0 60px 18px rgba(255,214,80,.55)}
+.sun::after{content:'';position:absolute;inset:-34px;border-radius:50%;
+  background:repeating-conic-gradient(rgba(255,220,90,.35) 0 9deg, transparent 9deg 22deg);
+  animation:spin 24s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.cloud{position:absolute;background:#fff;border-radius:60px;opacity:.92;animation:drift linear infinite}
+.cloud::before,.cloud::after{content:'';position:absolute;background:#fff;border-radius:50%}
+.cloud.c1{width:130px;height:38px;top:10%;animation-duration:70s;animation-delay:-12s}
+.cloud.c1::before{width:56px;height:56px;top:-26px;left:18px}
+.cloud.c1::after{width:40px;height:40px;top:-16px;left:66px}
+.cloud.c2{width:96px;height:30px;top:22%;animation-duration:95s;animation-delay:-48s;opacity:.8}
+.cloud.c2::before{width:44px;height:44px;top:-20px;left:14px}
+.cloud.c2::after{width:30px;height:30px;top:-12px;left:52px}
+.cloud.c3{width:160px;height:44px;top:5%;animation-duration:120s;animation-delay:-80s;opacity:.7}
+.cloud.c3::before{width:66px;height:66px;top:-30px;left:24px}
+.cloud.c3::after{width:46px;height:46px;top:-20px;left:84px}
+@keyframes drift{from{transform:translateX(-220px)}to{transform:translateX(110vw)}}
+
+/* ===== HEADER ===== */
+.topbar{display:flex;justify-content:space-between;align-items:center;max-width:1120px;margin:0 auto;padding:14px 18px 4px}
+.brand{display:flex;align-items:center;gap:12px}
+.brand-rope{font-size:34px;transform:rotate(-12deg);display:inline-block;animation:swing 3s ease-in-out infinite}
+@keyframes swing{0%,100%{transform:rotate(-12deg)}50%{transform:rotate(10deg)}}
+.brand h1{font-family:'Bangers',cursive;font-size:clamp(1.5rem,3.4vw,2.2rem);letter-spacing:1.5px;line-height:1;text-shadow:2px 2px 0 rgba(31,42,51,.18)}
+.brand h1 em{font-style:normal;color:var(--red)}
+.brand p{font-size:.72rem;font-weight:800;letter-spacing:.14em;opacity:.75;text-transform:uppercase}
+.sound-btn{font-size:22px;background:var(--paper);border:3px solid var(--ink);border-radius:12px;width:46px;height:46px;cursor:pointer;box-shadow:4px 4px 0 rgba(31,42,51,.25);transition:.15s}
+.sound-btn:hover{transform:translate(-2px,-2px);box-shadow:6px 6px 0 rgba(31,42,51,.25)}
+
+/* ===== STAGE ===== */
+.stage{max-width:1120px;margin:0 auto;padding:8px 16px 40px}
+
+/* scoreboard */
+.scorebar{display:grid;grid-template-columns:1fr auto 1fr;gap:12px;align-items:center;margin-bottom:10px}
+.plate{display:flex;align-items:center;gap:10px;padding:8px 16px;border:3px solid var(--ink);color:#fff;box-shadow:5px 5px 0 rgba(31,42,51,.25);transition:.15s}
+.plate:hover{transform:translateY(-2px)}
+.plate b{font-family:'Bangers',cursive;font-size:1.25rem;letter-spacing:1px;display:block;line-height:1}
+.plate small{font-size:.66rem;font-weight:800;letter-spacing:.08em;opacity:.9;text-transform:uppercase}
+.plate-left{justify-self:start;transform:skewX(-7deg);background:linear-gradient(135deg,var(--red),var(--red-d));border-radius:10px 22px 10px 22px}
+.plate-right{justify-self:end;transform:skewX(7deg);background:linear-gradient(135deg,var(--blue),var(--blue-d));border-radius:22px 10px 22px 10px;flex-direction:row-reverse;text-align:right}
+.plate-ico{font-size:26px}
+.mid{text-align:center;min-width:220px}
+.qcount{font-family:'Bangers',cursive;font-size:1.9rem;line-height:1;letter-spacing:1px}
+.qcount span:last-child{color:var(--red)}
+.pips{display:flex;gap:6px;justify-content:center;margin:5px 0 7px}
+.pips span{width:16px;height:16px;border-radius:50%;border:2.5px solid var(--ink);background:#fff;position:relative;transition:.3s}
+.pips span.ok{background:var(--green)}
+.pips span.ok::after{content:'✓';position:absolute;inset:0;display:grid;place-items:center;color:#fff;font-size:10px;font-weight:900}
+.pips span.bad{background:#d33a3a}
+.pips span.bad::after{content:'✕';position:absolute;inset:0;display:grid;place-items:center;color:#fff;font-size:10px;font-weight:900}
+.timer{height:11px;border:2.5px solid var(--ink);border-radius:8px;background:#fff;overflow:hidden}
+.timer-fill{height:100%;width:100%;background:linear-gradient(90deg,var(--green),#7ac943);transition:width .1s linear, background .3s}
+.timer-fill.low{background:linear-gradient(90deg,#d33a3a,var(--orange));animation:pulse .5s infinite alternate}
+@keyframes pulse{to{opacity:.55}}
+.secs{font-family:'Bangers',cursive;font-size:.95rem;margin-top:3px;letter-spacing:1px}
+.secs.low{color:#d33a3a;animation:pulse .5s infinite alternate}
+
+/* ===== ARENA ===== */
+.arena{position:relative;height:clamp(300px,42vh,400px);border:3px solid rgba(31,42,51,.15);border-radius:18px;overflow:hidden}
+.ground{position:absolute;left:0;right:0;bottom:0;height:44%;
+  background:repeating-linear-gradient(90deg,var(--grass) 0 70px, var(--grass-d) 70px 140px);
+  box-shadow:inset 0 6px 0 rgba(255,255,255,.18), inset 0 -40px 30px -20px rgba(0,0,0,.14)}
+.chalk{position:absolute;left:50%;top:-4px;bottom:0;width:6px;transform:translateX(-50%);
+  background:repeating-linear-gradient(#fff 0 16px, transparent 16px 28px);opacity:.9;border-radius:3px}
+.tick{position:absolute;top:2px;width:5px;height:16px;background:rgba(255,255,255,.75);border-radius:3px;transform:translateX(-50%)}
+.tick.mid{height:0}
+.zone{position:absolute;bottom:6px;font-family:'Bangers',cursive;font-size:.85rem;letter-spacing:1.5px;color:#fff;text-shadow:1px 1px 0 rgba(31,42,51,.35);opacity:.95}
+.zone-left{left:14px}.zone-right{right:14px}
+
+/* bendera segitiga */
+.bunting{position:absolute;top:0;left:-1%;right:-1%;height:46px;display:flex;padding-top:3px;z-index:3;pointer-events:none}
+.bunting::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:#6b4a2f;border-radius:2px}
+.bunting span{flex:1;margin:0 3px;height:28px;clip-path:polygon(0 0,100% 0,50% 96%);transform-origin:top center;animation:sway 2.4s ease-in-out infinite alternate}
+@keyframes sway{from{transform:rotate(-3deg)}to{transform:rotate(3deg)}}
+
+.announce{position:absolute;top:56px;left:50%;transform:translateX(-50%);z-index:4;
+  background:var(--paper);border:3px solid var(--ink);border-radius:12px;padding:6px 16px;
+  font-weight:900;font-size:.85rem;box-shadow:4px 4px 0 rgba(31,42,51,.22);white-space:nowrap;max-width:92%;overflow:hidden;text-overflow:ellipsis}
+.announce.pop{animation:popIn .4s cubic-bezier(.2,1.5,.4,1)}
+@keyframes popIn{from{transform:translateX(-50%) scale(.6);opacity:0}to{transform:translateX(-50%) scale(1);opacity:1}}
+
+/* tim & tali */
+.team{position:absolute;bottom:24%;z-index:2;transition:transform .95s cubic-bezier(.22,1.1,.36,1);transform:translateX(calc(var(--pull,0px) * .5))}
+.team-left{right:calc(50% + 20%);--jersey:var(--red);--jersey-d:var(--red-d)}
+.team-right{left:calc(50% + 20%)}
+.tline{display:flex;align-items:flex-end}
+.tline .puller + .puller{margin-left:-26px}
+.puller{height:var(--charH);width:auto;aspect-ratio:150/170;transform-origin:bottom center;animation:idle 2.8s ease-in-out infinite;filter:drop-shadow(3px 6px 3px rgba(31,42,51,.25))}
+.team-right .puller{aspect-ratio:150/178}
+.puller:nth-child(1){transform:scale(.84);animation-delay:-.4s;opacity:.96}
+.puller:nth-child(2){transform:scale(.94);animation-delay:-1.3s}
+.puller:nth-child(3){transform:scale(1.05);animation-delay:-2.1s;z-index:2}
+@keyframes idle{0%,100%{rotate:0deg}50%{rotate:-2deg}}
+.tline .puller{transition:none}
+/* sentakan tarik */
+.arena.heave-l .team-left .tline{animation:heaveL .9s cubic-bezier(.2,1.2,.4,1)}
+.arena.heave-l .team-right .tline{animation:dragL .9s cubic-bezier(.2,1.2,.4,1)}
+.arena.heave-r .team-right .tline{animation:heaveR .9s cubic-bezier(.2,1.2,.4,1)}
+.arena.heave-r .team-left .tline{animation:dragR .9s cubic-bezier(.2,1.2,.4,1)}
+@keyframes heaveL{35%{transform:translateX(-18px) rotate(-2.5deg)}}
+@keyframes dragL{35%{transform:translateX(-20px) rotate(2deg)}}
+@keyframes heaveR{35%{transform:translateX(18px) rotate(2.5deg)}}
+@keyframes dragR{35%{transform:translateX(20px) rotate(-2deg)}}
+
+.pullsys{position:absolute;left:50%;bottom:calc(24% + var(--charH) * .41);width:44%;height:12px;z-index:1;
+  transform:translateX(calc(-50% + var(--pull,0px) * .5));transition:transform .95s cubic-bezier(.22,1.1,.36,1)}
+.rope{position:absolute;inset:0;border-radius:8px;
+  background:repeating-linear-gradient(115deg,#d1a86b 0 7px,#b98d52 7px 12px,#a97f46 12px 14px);
+  box-shadow:0 3px 4px rgba(31,42,51,.3)}
+.flag{position:absolute;left:50%;top:-38px;width:6px;height:44px;
+  transform:translateX(calc(-50% + var(--pull,0px) * .5));transition:transform .95s cubic-bezier(.22,1.1,.36,1)}
+.pole{position:absolute;inset:0;background:#7a4d26;border-radius:3px}
+.pennant{position:absolute;top:0;left:5px;width:36px;height:22px;background:var(--red);
+  clip-path:polygon(0 0,100% 50%,0 100%);transform-origin:left center;animation:flap .55s ease-in-out infinite alternate}
+@keyframes flap{from{transform:skewY(-4deg) scaleY(.94)}to{transform:skewY(5deg) scaleY(1.05)}}
+.flag-score{position:absolute;top:-27px;left:50%;transform:translateX(-50%);white-space:nowrap;
+  font-family:'Bangers',cursive;font-size:.82rem;letter-spacing:1px;background:var(--ink);color:#fff;
+  padding:2px 9px;border-radius:7px}
+.flag-score.kiri{background:var(--green)} .flag-score.kanan{background:var(--blue)}
+
+/* debu */
+.dust{position:absolute;width:14px;height:14px;border-radius:50%;background:rgba(210,190,150,.85);pointer-events:none;z-index:2;animation:puff .8s ease-out forwards}
+@keyframes puff{from{opacity:.9;transform:translate(0,0) scale(.4)}to{opacity:0;transform:translate(var(--dx,0px),-30px) scale(1.5)}}
+
+/* stempel */
+.stamp{position:absolute;inset:0;display:grid;place-items:center;pointer-events:none;z-index:6;opacity:0}
+.stamp div{font-family:'Bangers',cursive;font-size:clamp(2.6rem,8vw,4.6rem);letter-spacing:3px;padding:6px 30px;
+  border:6px solid currentColor;border-radius:16px;background:rgba(255,253,245,.92);transform:rotate(-7deg)}
+.stamp.ok div{color:var(--green)} .stamp.bad div{color:#d33a3a} .stamp.time div{color:var(--orange)}
+.stamp.show{animation:stampIn .45s cubic-bezier(.2,1.5,.4,1) forwards, stampOut .3s ease 1s forwards}
+@keyframes stampIn{from{opacity:0;transform:scale(2.4)}to{opacity:1;transform:scale(1)}}
+@keyframes stampOut{to{opacity:0;transform:scale(1.12)}}
+
+/* ===== KARTU SOAL ===== */
+.qcard{margin-top:14px;background:var(--paper);border:3px solid var(--ink);border-radius:16px;
+  padding:18px 20px;box-shadow:8px 8px 0 rgba(31,42,51,.18)}
+.qhead{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:10px}
+.chip{font-family:'Bangers',cursive;letter-spacing:1.5px;background:var(--ink);color:#fff;padding:4px 14px;border-radius:9px;font-size:1rem}
+.chip.time{background:var(--orange)} .chip.time.low{background:#d33a3a;animation:pulse .5s infinite alternate}
+#qText{font-size:clamp(1.02rem,2.1vw,1.3rem);font-weight:900;line-height:1.45;margin-bottom:14px}
+#qText.pop-in{animation:slideUp .4s ease}
+@keyframes slideUp{from{opacity:0;transform:translateY(12px)}to{opacity:1}}
+.opts{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.opts.pop-in{animation:slideUp .4s ease}
+.opt{display:flex;align-items:center;gap:12px;padding:11px 14px;text-align:left;font-family:'Nunito',sans-serif;
+  font-size:.95rem;font-weight:800;color:var(--ink);background:#fff;border:3px solid var(--ink);border-radius:12px;
+  cursor:pointer;box-shadow:4px 4px 0 rgba(31,42,51,.15);transition:transform .15s, box-shadow .15s, background .2s}
+.opt:not(:disabled):hover{transform:translate(-2px,-2px);box-shadow:6px 6px 0 rgba(31,42,51,.2)}
+.opt:not(:disabled):active{transform:translate(1px,1px);box-shadow:2px 2px 0 rgba(31,42,51,.2)}
+.opt .key{flex:none;width:34px;height:34px;display:grid;place-items:center;background:var(--ink);color:#fff;
+  font-family:'Bangers',cursive;font-size:1.1rem;border-radius:9px;transition:background .2s}
+.opt:not(:disabled):hover .key{background:var(--red)}
+.opt.correct{background:#d9f5d0;border-color:var(--green)} .opt.correct .key{background:var(--green)}
+.opt.wrong{background:#ffd9d4;border-color:#d33a3a;animation:shake .4s}
+.opt.wrong .key{background:#d33a3a}
+.opt.dim{opacity:.45}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+.qcard.locked .opt{pointer-events:none}
+.info{display:none;margin-top:12px;background:#fff6d9;border:2px dashed #d9a62e;border-radius:10px;padding:8px 14px;font-size:.85rem;font-weight:700}
+.info.show{display:block;animation:slideUp .35s ease}
+.hint{margin-top:10px;font-size:.72rem;font-weight:700;opacity:.55;text-align:center}
+
+/* ===== OVERLAY ===== */
+.overlay{position:fixed;inset:0;z-index:50;display:grid;place-items:center;background:rgba(15,23,32,.66);padding:16px;overflow:auto}
+.overlay.hidden{display:none}
+.ov-card{width:min(680px,94vw);background:var(--paper);border:4px solid var(--ink);border-radius:20px;
+  box-shadow:12px 12px 0 rgba(0,0,0,.3);padding:26px 26px 30px;text-align:center;animation:popIn .5s cubic-bezier(.2,1.4,.4,1)}
+.ov-kicker{font-size:.7rem;font-weight:900;letter-spacing:.3em;color:var(--red);margin-bottom:6px}
+.ov-title{font-family:'Bangers',cursive;font-size:clamp(2.2rem,6vw,3.4rem);line-height:.95;letter-spacing:2px}
+.ov-title span{color:var(--red)}
+.vs-row{display:grid;grid-template-columns:1fr auto 1fr;gap:12px;align-items:stretch;margin:18px 0}
+.vs-side{border:3px solid var(--ink);border-radius:14px;padding:12px 8px;color:#fff;display:flex;flex-direction:column;align-items:center;gap:4px}
+.vs-side b{font-family:'Bangers',cursive;font-size:1.2rem;letter-spacing:1px}
+.vs-side small{font-size:.68rem;font-weight:800;opacity:.9;letter-spacing:.06em}
+.side-l{background:linear-gradient(160deg,var(--red),var(--red-d));transform:rotate(-1.5deg)}
+.side-r{background:linear-gradient(200deg,var(--blue),var(--blue-d));transform:rotate(1.5deg)}
+.mini{height:88px;width:auto;aspect-ratio:150/170;filter:drop-shadow(2px 4px 2px rgba(0,0,0,.25))}
+.mini-r{aspect-ratio:150/178}
+.side-l{--jersey:#fff;--jersey-d:#ffd9d4}
+.vs-badge{align-self:center;width:62px;height:62px;display:grid;place-items:center;background:var(--gold);
+  border:3px solid var(--ink);border-radius:50%;font-family:'Bangers',cursive;font-size:1.7rem;transform:rotate(-8deg);
+  box-shadow:4px 4px 0 rgba(31,42,51,.25);animation:swing 2.2s ease-in-out infinite}
+.rules{list-style:none;text-align:left;margin:0 auto 20px;max-width:480px}
+.rules li{padding:7px 2px;border-bottom:2px dashed rgba(31,42,51,.2);font-size:.9rem;font-weight:700}
+.rules li:last-child{border-bottom:none}
+.big-btn{font-family:'Bangers',cursive;font-size:1.45rem;letter-spacing:2px;color:#fff;background:var(--red);
+  border:3px solid var(--ink);border-radius:14px;padding:12px 34px;cursor:pointer;box-shadow:6px 6px 0 var(--ink);transition:.15s}
+.big-btn:hover{transform:translate(-2px,-3px);box-shadow:9px 9px 0 var(--ink);background:var(--red-d)}
+.big-btn:active{transform:translate(2px,2px);box-shadow:2px 2px 0 var(--ink)}
+.end-emoji{font-size:64px;line-height:1;animation:bounceIn .7s cubic-bezier(.2,1.6,.4,1)}
+@keyframes bounceIn{from{transform:scale(0) rotate(-30deg)}to{transform:scale(1)}}
+#endTitle{font-family:'Bangers',cursive;font-size:clamp(2rem,6vw,3rem);letter-spacing:2px;margin:6px 0 4px}
+#endSub{font-weight:700;font-size:.95rem;max-width:440px;margin:0 auto}
+.recap{display:flex;align-items:center;justify-content:center;gap:14px;flex-wrap:wrap;margin:16px 0;background:#fff;
+  border:3px solid var(--ink);border-radius:12px;padding:10px 16px;font-weight:800;font-size:.85rem}
+.quote{font-size:.82rem;font-weight:700;font-style:italic;opacity:.75;max-width:420px;margin:0 auto 18px}
+#fx{position:fixed;inset:0;pointer-events:none;z-index:60;overflow:hidden}
+.piece{position:absolute;top:-30px;animation:fall linear forwards}
+@keyframes fall{to{transform:translateY(112vh) rotate(var(--rot,540deg))}}
+.brain{position:absolute;top:-40px;font-family:'Bangers',cursive;color:#aebfd0;animation:fall linear forwards}
+
+/* responsif */
+@media (max-width:860px){:root{--charH:108px}.plate b{font-size:1rem}.plate small{display:none}.mid{min-width:150px}.qcount{font-size:1.5rem}}
+@media (max-width:640px){
+  :root{--charH:88px}
+  .opts{grid-template-columns:1fr}
+  .arena{height:300px}
+  .tline .puller:nth-child(1){display:none}
+  .vs-row{gap:6px}.mini{height:64px}
+  .announce{font-size:.7rem;top:50px}
+  .brand p{display:none}
+}
+@media (prefers-reduced-motion:reduce){
+  .cloud,.sun::after,.bunting span,.puller,.pennant,.brand-rope,.vs-badge{animation:none !important}
+}
+</style>
+</head>
+<body>
+
+<!-- karakter SVG -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
+<symbol id="student" viewBox="0 0 150 170">
+  <path d="M64 106 Q42 128 30 152" stroke="#2e3d4f" stroke-width="15" fill="none" stroke-linecap="round"/>
+  <path d="M78 108 Q98 130 108 152" stroke="#3a4d63" stroke-width="15" fill="none" stroke-linecap="round"/>
+  <ellipse cx="28" cy="157" rx="14" ry="7" fill="#1f2a33"/>
+  <ellipse cx="112" cy="157" rx="14" ry="7" fill="#1f2a33"/>
+  <g transform="rotate(-24 70 86)">
+    <rect x="44" y="50" width="50" height="62" rx="24" fill="var(--jersey,#e23b3b)"/>
+    <text x="69" y="95" text-anchor="middle" font-family="Bangers, cursive" font-size="27" fill="#fff">12</text>
+  </g>
+  <path d="M66 70 Q96 76 119 92" stroke="#f2b98d" stroke-width="12" fill="none" stroke-linecap="round"/>
+  <path d="M60 86 Q94 92 119 100" stroke="#eeb083" stroke-width="12" fill="none" stroke-linecap="round"/>
+  <circle cx="121" cy="96" r="10" fill="#f2b98d" stroke="#cf9666" stroke-width="2.5"/>
+  <circle cx="88" cy="28" r="23" fill="#f7c79c"/>
+  <path d="M66 22 Q70 6 90 7 Q108 8 110 22 Q98 14 88 15 Q76 15 66 22Z" fill="#33261a"/>
+  <path d="M66 20 L48 12 L57 24 L45 27 L61 30 Z" fill="var(--jersey,#e23b3b)"/>
+  <g transform="rotate(-6 88 22)"><rect x="64" y="16" width="48" height="10" rx="5" fill="var(--jersey,#e23b3b)"/></g>
+  <circle cx="97" cy="30" r="3" fill="#1f2a33"/>
+  <path d="M91 23 L103 26" stroke="#1f2a33" stroke-width="2.5" stroke-linecap="round"/>
+  <path d="M96 40 q5 3 9 -1" stroke="#1f2a33" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+</symbol>
+<symbol id="robot" viewBox="0 -8 150 178">
+  <path d="M86 106 Q106 128 116 152" stroke="#46586b" stroke-width="14" fill="none" stroke-linecap="round"/>
+  <path d="M72 108 Q52 130 44 152" stroke="#3a4a5c" stroke-width="14" fill="none" stroke-linecap="round"/>
+  <rect x="28" y="150" width="30" height="12" rx="6" fill="#1f2a33"/>
+  <rect x="102" y="150" width="30" height="12" rx="6" fill="#1f2a33"/>
+  <g transform="rotate(22 80 86)">
+    <rect x="52" y="50" width="54" height="62" rx="14" fill="#8aa2b8"/>
+    <rect x="60" y="62" width="38" height="24" rx="6" fill="#16222e"/>
+    <text x="79" y="80" text-anchor="middle" font-family="Bangers, cursive" font-size="16" fill="#4de3ff">AI</text>
+  </g>
+  <path d="M84 70 Q54 76 31 92" stroke="#7d94a9" stroke-width="12" fill="none" stroke-linecap="round"/>
+  <path d="M90 86 Q56 92 31 100" stroke="#8aa2b8" stroke-width="12" fill="none" stroke-linecap="round"/>
+  <circle cx="29" cy="96" r="10" fill="#5c7186" stroke="#3f5164" stroke-width="2.5"/>
+  <line x1="84" y1="8" x2="84" y2="0" stroke="#5c7186" stroke-width="4"/>
+  <circle cx="84" cy="-2" r="4.5" fill="#ff5252">
+    <animate attributeName="opacity" values="1;.2;1" dur="1.2s" repeatCount="indefinite"/>
+  </circle>
+  <rect x="58" y="8" width="52" height="44" rx="10" fill="#9db4c9"/>
+  <rect x="66" y="17" width="36" height="26" rx="6" fill="#16222e"/>
+  <rect x="73" y="23" width="7" height="12" rx="2" fill="#4de3ff">
+    <animate attributeName="height" values="12;12;2;12" keyTimes="0;.88;.94;1" dur="3.4s" repeatCount="indefinite"/>
+  </rect>
+  <rect x="88" y="23" width="7" height="12" rx="2" fill="#4de3ff">
+    <animate attributeName="height" values="12;12;2;12" keyTimes="0;.88;.94;1" dur="3.4s" repeatCount="indefinite"/>
+  </rect>
+</symbol>
+</defs></svg>
+
+<div class="sky">
+  <div class="sun"></div>
+  <div class="cloud c1"></div><div class="cloud c2"></div><div class="cloud c3"></div>
+</div>
+
+<header class="topbar">
+  <div class="brand">
+    <span class="brand-rope">🪢</span>
+    <div>
+      <h1>TARIK TAMBANG <em>JARINGAN</em></h1>
+      <p>Game Edukasi Kewirausahaan • SMK Kelas XII</p>
+    </div>
+  </div>
+  <button class="sound-btn" id="btnSound" title="Suara">🔊</button>
+</header>
+
+<main class="stage">
+  <section class="scorebar">
+    <div class="plate plate-left"><span class="plate-ico">🧑‍🎓</span><div><b>TIM SISWA</b><small>Pejuang Kelas XII</small></div></div>
+    <div class="mid">
+      <div class="qcount">SOAL <span id="qNow">1</span>/<span>5</span></div>
+      <div class="pips" id="pips"></div>
+      <div class="timer"><div class="timer-fill" id="timerFill"></div></div>
+      <div class="secs" id="secs">⏱ 20 detik</div>
+    </div>
+    <div class="plate plate-right"><span class="plate-ico">🤖</span><div><b>TIM KOMPUTER</b><small>Mesin Tanpa Ampun</small></div></div>
+  </section>
+
+  <section class="arena" id="arena">
+    <div class="bunting" id="bunting"></div>
+    <div class="announce" id="announce" aria-live="polite">📣 Siap-siap, pertandingan segera dimulai!</div>
+    <div class="ground">
+      <div class="chalk"></div>
+      <div id="ticks"></div>
+      <div class="zone zone-left">🏆 ZONA SISWA</div>
+      <div class="zone zone-right">ZONA KOMPUTER 🤖</div>
+    </div>
+    <div class="team team-left" id="teamL"><div class="tline">
+      <svg class="puller"><use href="#student"/></svg>
+      <svg class="puller"><use href="#student"/></svg>
+      <svg class="puller"><use href="#student"/></svg>
+    </div></div>
+    <div class="pullsys">
+      <div class="rope"></div>
+      <div class="flag">
+        <div class="flag-score" id="flagScore">SEIMBANG</div>
+        <div class="pole"></div><div class="pennant"></div>
+      </div>
+    </div>
+    <div class="team team-right" id="teamR"><div class="tline">
+      <svg class="puller"><use href="#robot"/></svg>
+      <svg class="puller"><use href="#robot"/></svg>
+      <svg class="puller"><use href="#robot"/></svg>
+    </div></div>
+    <div class="stamp" id="stamp"><div id="stampTxt">BENAR!</div></div>
+  </section>
+
+  <section class="qcard" id="qcard">
+    <div class="qhead">
+      <span class="chip" id="chip">SOAL 1</span>
+      <span class="chip time" id="timerChip">⏱ 20</span>
+    </div>
+    <h2 id="qText">…</h2>
+    <div class="opts" id="opts"></div>
+    <div class="info" id="info"></div>
+    <div class="hint">💡 Bisa pakai keyboard: tombol 1–4 atau A–D</div>
+  </section>
+</main>
+
+<!-- OVERLAY MULAI -->
+<div class="overlay" id="startOverlay">
+  <div class="ov-card">
+    <div class="ov-kicker">PROYEK KEWIRAUSAHAAN • SMK KELAS 12</div>
+    <h2 class="ov-title">TARIK TAMBANG<br><span>JARINGAN</span></h2>
+    <div class="vs-row">
+      <div class="vs-side side-l"><svg class="mini"><use href="#student"/></svg><b>TIM SISWA</b><small>KIRI • MANUSIA</small></div>
+      <div class="vs-badge">VS</div>
+      <div class="vs-side side-r"><svg class="mini mini-r"><use href="#robot"/></svg><b>TIM KOMPUTER</b><small>KANAN • MESIN</small></div>
+    </div>
+    <ul class="rules">
+      <li>🧠 Jawab <b>5 soal seputar jaringan</b> — masing-masing <b>20 detik</b>.</li>
+      <li>✅ Jawaban <b>BENAR</b> → tali tertarik ke <b>KIRI</b> (keuntungan siswa).</li>
+      <li>❌ Jawaban <b>SALAH / waktu habis</b> → tali diseret komputer ke <b>KANAN</b>.</li>
+      <li>🏁 Setelah soal ke-5, posisi tali menentukan pemenangnya.</li>
+      <li>🌟 Jawab <b>semua benar</b> = kemenangan telak Tim Siswa!</li>
+    </ul>
+    <button class="big-btn" id="btnStart">🎺 MULAI PERTANDINGAN!</button>
+  </div>
+</div>
+
+<!-- OVERLAY AKHIR -->
+<div class="overlay hidden" id="endOverlay">
+  <div class="ov-card">
+    <div class="end-emoji" id="endEmoji">🏆</div>
+    <h2 id="endTitle">SISWA MENANG!</h2>
+    <p id="endSub">…</p>
+    <div class="recap" id="recap"></div>
+    <p class="quote" id="endQuote"></p>
+    <button class="big-btn" id="btnAgain">🔁 MAIN LAGI</button>
+  </div>
+</div>
+
+<div id="fx"></div>
+
+<script>
+/* ================= DATA SOAL (boleh ditambah/diedit) ================= */
+const POOL = [
+ {q:"Perangkat jaringan yang berfungsi menghubungkan dua atau lebih jaringan yang berbeda adalah…",
+  o:["Hub","Router","Repeater","Switch"],a:1,info:"Router bertugas mencari jalur terbaik untuk menghubungkan jaringan yang berbeda."},
+ {q:"Kepanjangan dari DNS adalah…",
+  o:["Domain Name System","Digital Network Service","Data Node System","Dynamic Name Server"],a:0,info:"DNS menerjemahkan nama domain (mis. sekolah.sch.id) menjadi alamat IP."},
+ {q:"Berapa jumlah kawat (inti) di dalam satu kabel UTP?",
+  o:["4 kawat","6 kawat","8 kawat","10 kawat"],a:2,info:"Kabel UTP punya 8 kawat yang dipilin menjadi 4 pasang."},
+ {q:"Topologi jaringan di mana semua perangkat terhubung ke satu titik pusat (switch) disebut topologi…",
+  o:["Bus","Ring","Mesh","Star"],a:3,info:"Topologi Star paling sering dipakai di sekolah dan kantor."},
+ {q:"Alamat IP versi 4 (IPv4) terdiri atas berapa bit?",
+  o:["16 bit","32 bit","64 bit","128 bit"],a:1,info:"IPv4 = 32 bit, contoh penulisannya 192.168.1.1"},
+ {q:"Konektor yang dipasang pada ujung kabel UTP adalah…",
+  o:["RJ-11","RJ-45","USB","BNC"],a:1,info:"RJ-45 memiliki 8 pin dan dipakai pada jaringan LAN."},
+ {q:"Protokol yang digunakan untuk membuka halaman web adalah…",
+  o:["FTP","SMTP","HTTP","POP3"],a:2,info:"HTTP/HTTPS adalah protokol untuk bertukar dokumen web."},
+ {q:"Jaringan komputer yang mencakup wilayah satu kota disebut…",
+  o:["PAN","LAN","MAN","WAN"],a:2,info:"MAN (Metropolitan Area Network) mencakup area antar gedung dalam satu kota."},
+ {q:"Alat untuk menguji apakah sambungan dan urutan kabel jaringan sudah benar adalah…",
+  o:["Crimping tool","LAN tester","Tang potong","Obeng minus"],a:1,info:"LAN tester / cable tester mengecek urutan dan konektivitas kabel."},
+ {q:"Perangkat yang hanya menguatkan kembali sinyal jaringan tanpa mengatur lalu lintas data adalah…",
+  o:["Switch","Router","Repeater","Firewall"],a:2,info:"Repeater hanya memperkuat sinyal yang mulai melemah."},
+ {q:"Alat yang memancarkan sinyal Wi-Fi untuk perangkat client di sekolah biasanya adalah…",
+  o:["Access Point","Printer","UPS","Stabilizer"],a:0,info:"Access point memancarkan sinyal Wi-Fi untuk perangkat client."},
+ {q:"Alat untuk menjepit konektor RJ-45 ke kabel UTP disebut…",
+  o:["Crimping tool","LAN tester","Solder","Multimeter"],a:0,info:"Crimping tool mengunci konektor RJ-45 pada kabel UTP."},
+ {q:"Agar dua komputer dalam satu LAN dapat saling berkomunikasi, keduanya harus memiliki…",
+  o:["Alamat IP satu segmen","RAM yang besar","VGA yang sama","Printer bersama"],a:0,info:"IP satu segmen memungkinkan komunikasi langsung di dalam LAN."}
+];
+
+/* ================= UTIL & SUARA ================= */
+const $=s=>document.querySelector(s);
+const shuffle=a=>{for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;};
+let actx=null, muted=false;
+const ac=()=>actx||(actx=new (window.AudioContext||window.webkitAudioContext)());
+function tone(f,d,type='square',t=0,v=.07){ if(muted)return; try{ const c=ac(),o=c.createOscillator(),g=c.createGain();
+  o.type=type;o.frequency.value=f;g.gain.setValueAtTime(v,c.currentTime+t);
+  g.gain.exponentialRampToValueAtTime(.0001,c.currentTime+t+d);
+  o.connect(g).connect(c.destination);o.start(c.currentTime+t);o.stop(c.currentTime+t+d);}catch(e){} }
+const sndWhistle=()=>{tone(2300,.12,'square',0,.05);tone(2300,.3,'square',.17,.05);};
+const sndOk =()=>{tone(660,.12,'triangle');tone(880,.2,'triangle',.11);};
+const sndNo =()=>{tone(180,.28,'sawtooth',0,.09);tone(140,.34,'sawtooth',.09,.07);};
+const sndTick=()=>tone(1050,.05,'square',0,.035);
+const sndPull=()=>tone(95,.16,'sine',0,.12);
+const sndWin=()=>[523,659,784,1047].forEach((f,i)=>tone(f,.2,'triangle',i*.13,.08));
+const sndLose=()=>[392,330,262].forEach((f,i)=>tone(f,.3,'sawtooth',i*.2,.06));
+
+/* ================= STATE ================= */
+const arena=$('#arena'), teamL=$('#teamL'), teamR=$('#teamR'), fx=$('#fx');
+let questions=[], cur=0, offset=0, results=[], locked=true, step=30, timerId=null, timeLeft=20, lastSec=20;
+
+/* ================= DEKORASI ================= */
+(function bunting(){ const b=$('#bunting'), cols=['#e23b3b','#ffd24a','#2f6fe0','#f5f7f4'];
+  for(let i=0;i<22;i++){const s=document.createElement('span');s.style.background=cols[i%4];s.style.animationDelay=(-i*.23)+'s';b.appendChild(s);} })();
+function buildPips(){ const p=$('#pips');p.innerHTML='';for(let i=0;i<5;i++)p.appendChild(document.createElement('span')); }
+function setPip(i,ok){ $('#pips').children[i].className=ok?'ok':'bad'; }
+function buildTicks(){ const t=$('#ticks');t.innerHTML='';
+  for(let i=-5;i<=5;i++){ if(i===0)continue; const d=document.createElement('div');d.className='tick';
+    d.style.left=`calc(50% + ${i*step}px)`; t.appendChild(d);} }
+function measure(){ step=Math.max(16,Math.min(38,arena.clientWidth*.045)); buildTicks(); setPull(true); }
+function setPull(){ arena.style.setProperty('--pull',(offset*step)+'px');
+  const f=$('#flagScore'); f.className='flag-score'+(offset<0?' kiri':offset>0?' kanan':'');
+  f.textContent = offset===0?'SEIMBANG': offset<0?`◀ SISWA ${-offset}`:`KOMPUTER ${offset} ▶`; }
+function announce(msg){ const a=$('#announce');a.textContent='📣 '+msg;a.classList.remove('pop');void a.offsetWidth;a.classList.add('pop'); }
+function stamp(txt,cls){ const s=$('#stamp');$('#stampTxt').textContent=txt;s.className='stamp '+cls;
+  void s.offsetWidth;s.classList.add('show');setTimeout(()=>s.classList.remove('show'),1450); }
+function dust(el){ const ar=arena.getBoundingClientRect(),r=el.getBoundingClientRect();
+  for(let i=0;i<5;i++){const d=document.createElement('div');d.className='dust';
+    d.style.left=(r.right-ar.left-Math.random()*r.width*.85)+'px';
+    d.style.top=(r.bottom-ar.top-10-Math.random()*8)+'px';
+    d.style.setProperty('--dx',(Math.random()*40-20)+'px');
+    arena.appendChild(d);setTimeout(()=>d.remove(),850);} }
+function heave(dir){ arena.classList.add(dir<0?'heave-l':'heave-r');
+  setTimeout(()=>arena.classList.remove('heave-l','heave-r'),950); }
+
+/* ================= SOAL ================= */
+function prepare(){ questions = shuffle([...POOL]).slice(0,5).map(it=>{
+  const idx=shuffle([0,1,2,3]);
+  return {q:it.q, opts:idx.map(i=>it.o[i]), a:idx.indexOf(it.a), info:it.info}; }); }
+function renderQ(){ const q=questions[cur]; locked=false;
+  $('#chip').textContent='SOAL '+(cur+1); $('#qNow').textContent=cur+1;
+  const t=$('#qText'); t.textContent=q.q; t.classList.remove('pop-in');void t.offsetWidth;t.classList.add('pop-in');
+  const box=$('#opts'); box.innerHTML=''; box.classList.remove('pop-in');void box.offsetWidth;box.classList.add('pop-in');
+  q.opts.forEach((op,i)=>{ const b=document.createElement('button');b.className='opt';
+    b.innerHTML=`<span class="key">${'ABCD'[i]}</span><span>${op}</span>`;
+    b.onclick=()=>answer(i); box.appendChild(b); });
+  $('#info').className='info'; $('#qcard').classList.remove('locked');
+  resetTimer(); }
+function resetTimer(){ timeLeft=20;lastSec=20;
+  $('#timerFill').style.width='100%';$('#timerFill').classList.remove('low');
+  $('#timerChip').textContent='⏱ 20';$('#timerChip').classList.remove('low');
+  $('#secs').textContent='⏱ 20 detik';$('#secs').classList.remove('low'); }
+function startTimer(){ clearInterval(timerId);
+  timerId=setInterval(()=>{ timeLeft-=.1; if(timeLeft<=0){timeLeft=0;paintTimer();onTimeout();return;}
+    paintTimer();
+    const s=Math.ceil(timeLeft);
+    if(s!==lastSec){lastSec=s; if(s<=5)sndTick();}
+  },100); }
+function paintTimer(){ const p=timeLeft/20*100;
+  $('#timerFill').style.width=p+'%';
+  const low=timeLeft<=5.05;
+  $('#timerFill').classList.toggle('low',low);
+  $('#timerChip').classList.toggle('low',low);
+  $('#secs').classList.toggle('low',low);
+  $('#timerChip').textContent='⏱ '+Math.ceil(timeLeft);
+  $('#secs').textContent='⏱ '+Math.ceil(timeLeft)+' detik'; }
+
+/* ================= JAWAB ================= */
+const C_OK=["TARIKAN KUAT! Jawaban tepat! 💪","Mantap! Tali bergeser ke kiri!","Benar! Komputer mulai keteteran!","Keren! Satu tarikan untuk Tim Siswa!"];
+const C_NO=["Yah, salah! Komputer menarik balik! 🤖","Aduh! Tali meluncur ke kanan!","Fokus! Komputer mencuri poin!","Waduh, mesin makin kuat!"];
+const pick=a=>a[Math.floor(Math.random()*a.length)];
+
+function resolve(ok,timeup){ if(locked)return; locked=true; clearInterval(timerId);
+  $('#qcard').classList.add('locked');
+  const q=questions[cur], btns=$('#opts').children;
+  [...btns].forEach((b,i)=>{ if(i===q.a)b.classList.add('correct');
+    else if(i===b.picked)b.classList.add('wrong'); else b.classList.add('dim'); });
+  results.push(ok); setPip(cur,ok);
+  if(timeup){ stamp('WAKTU HABIS!','time'); announce('⏰ Waktu habis! Komputer menarik tali!'); }
+  else if(ok){ stamp('BENAR!','ok'); announce(pick(C_OK)); sndOk(); }
+  else { stamp('SALAH!','bad'); announce(pick(C_NO)); sndNo(); }
+  const dir=ok?-1:1; offset+=dir;
+  setTimeout(()=>{ sndPull(); setPull(); heave(dir); dust(dir<0?teamR:teamL); dust(dir<0?teamL:teamR); },250);
+  const inf=$('#info'); inf.innerHTML=(ok?'✅':'❌')+ ' 💡 '+q.info; inf.classList.add('show');
+  setTimeout(()=>{ cur++; if(cur<5)renderQ(),startTimer(); else endGame(); },1900); }
+
+function answer(i){ if(locked)return; $('#opts').children[i].picked=true; resolve(i===questions[cur].a,false); }
+function onTimeout(){ if(locked)return; resolve(false,true); }
+
+/* ================= AKHIR PERMAINAN ================= */
+function endGame(){ const n=results.filter(Boolean).length, win=offset<0;
+  const data={
+   5:{e:'🏆',t:'MENANG TELAK!',s:'Lima dari lima benar! Tali tak pernah bergeser ke kanan — komputer menyerah tanpa syarat.'},
+   4:{e:'🎉',t:'SISWA MENANG!',s:'Empat jawaban benar — tarikanmu terlalu kuat untuk mesin!'},
+   3:{e:'😤',t:'MENANG TIPIS!',s:'Tiga jawaban benar sudah cukup membuat tali condong ke kiri. Nyaris terkejar tadi!'},
+   2:{e:'🤖',t:'KOMPUTER MENANG',s:'Dua jawaban benar belum cukup menahan tarikan mesin. Pelajari lagi materinya!'},
+   1:{e:'🤖',t:'KOMPUTER MENANG',s:'Komputer menarik terlalu jauh. Saatnya buka kembali catatan jaringanmu!'},
+   0:{e:'💀',t:'KALAH TELAK',s:'Lima-limanya lepas! Tapi wirausahawan sejati tidak berhenti di kegagalan pertama.'}}[n];
+  $('#endEmoji').textContent=data.e; $('#endTitle').textContent=data.t; $('#endSub').textContent=data.s;
+  $('#endQuote').textContent = win
+    ? '\u201CMenang karena ilmu, dan tetap rendah hati untuk terus belajar.\u201D — semangat wirausaha muda!'
+    : '\u201CGagal hari ini bukan gagal selamanya. Wirausahawan bangkit satu kali lebih banyak daripada jatuhnya.\u201D';
+  const pos = offset<0?`wilayah SISWA (−${-offset})`: offset>0?`wilayah KOMPUTER (+${offset})`:'garis tengah';
+  $('#recap').innerHTML=`Skor: <b>${n}/5 benar</b> • Tali berhenti di <b>${pos}</b>
+    <span class="pips" style="margin:0">${results.map(r=>`<span class="${r?'ok':'bad'}"></span>`).join('')}</span>`;
+  $('#endOverlay').classList.remove('hidden');
+  if(win){ sndWin(); confetti(); announce('🏁 PELUIT PANJANG! TIM SISWA MENANG!'); }
+  else { sndLose(); binaryRain(); announce('🏁 Pertandingan selesai. Komputer kali ini lebih kuat…'); } }
+
+function confetti(){ fx.innerHTML=''; const cols=['#e23b3b','#ffd24a','#2f6fe0','#57b04c','#fff'];
+  for(let i=0;i<100;i++){ const p=document.createElement('div');p.className='piece';
+    p.style.left=Math.random()*100+'vw'; p.style.background=cols[i%cols.length];
+    p.style.width=(6+Math.random()*7)+'px'; p.style.height=(10+Math.random()*8)+'px';
+    p.style.borderRadius=Math.random()>.5?'50%':'2px';
+    p.style.setProperty('--rot',(Math.random()*720-360)+'deg');
+    p.style.animationDuration=(2.2+Math.random()*2.2)+'s'; p.style.animationDelay=(Math.random()*.7)+'s';
+    fx.appendChild(p);} setTimeout(()=>fx.innerHTML='',5200); }
+function binaryRain(){ fx.innerHTML='';
+  for(let i=0;i<60;i++){ const p=document.createElement('span');p.className='brain';
+    p.textContent=Math.random()>.85?'🤖':(Math.random()>.5?'1':'0');
+    p.style.left=Math.random()*100+'vw'; p.style.fontSize=(13+Math.random()*12)+'px';
+    p.style.setProperty('--rot',(Math.random()*360-180)+'deg');
+    p.style.animationDuration=(2.6+Math.random()*2.4)+'s'; p.style.animationDelay=(Math.random()*.9)+'s';
+    fx.appendChild(p);} setTimeout(()=>fx.innerHTML='',5500); }
+
+/* ================= ALUR ================= */
+function newGame(){ prepare(); cur=0;offset=0;results=[];locked=true;
+  buildPips(); arena.classList.add('no-trans'); setPull(); void arena.offsetWidth; arena.classList.remove('no-trans');
+  $('#endOverlay').classList.add('hidden');
+  renderQ(); announce('Pertandingan dimulai! Tarik, Tim Siswa! 🔥'); sndWhistle(); startTimer(); }
+
+$('#btnStart').onclick=()=>{ $('#startOverlay').classList.add('hidden'); newGame(); };
+$('#btnAgain').onclick=newGame;
+$('#btnSound').onclick=e=>{ muted=!muted; e.currentTarget.textContent=muted?'🔇':'🔊'; };
+
+document.addEventListener('keydown',e=>{
+  if(!$('#startOverlay').classList.contains('hidden')){ if(e.key==='Enter')$('#btnStart').click(); return; }
+  if(!$('#endOverlay').classList.contains('hidden')){ if(e.key==='Enter')$('#btnAgain').click(); return; }
+  if(locked)return;
+  const map={'1':0,'2':1,'3':2,'4':3,'a':0,'b':1,'c':2,'d':3};
+  const k=map[e.key.toLowerCase()]; if(k!==undefined && $('#opts').children[k]) answer(k); });
+
+window.addEventListener('resize',measure);
+
+/* init */
+prepare(); buildPips(); measure(); renderQ(); locked=true; resetTimer();
+</script>
+</body>
+</html>
